@@ -1,0 +1,137 @@
+def kicad():
+    print("""Alur Kicad Setelah Routing Kelar \n
+          1.Bikin kotak panjang buat edgcuts\n
+          2.Bikin kotak panjang di B.CU tetapi didalem kotak edgecuts\n
+          3.Klik kanan di kotak B.Cu terus "create from selection"\n
+          4.Pilih "create zone from selectiom"\n
+          5.Pilih "fill zone"\n
+          6.Plot dsamping print\n
+          7.Di include layer centang hanya B.cu dan Edge cuts\n
+          8.Generate Drill File, terus generate lalu plot\n        
+          9.Terus export model nya ke STL
+          """)
+    
+def Flatcam():
+    print("""
+            1.Open gerber Pilih B.cu dan Edgecuts dengan format Gbr\n
+            2.Open excelon trus pilih yg NPTH\n
+            3.Pilih semua object lalu di klik move to origin \n
+            4.Pilih semua object lagi lalu Tools-> 2sided pcb\n
+            5.Pada Source Object pilih bcu.gerber lalu di miror operation pilih box dan file nya "edge_cuts.gbr"\n
+            6.Lalu source nya ke excellon ->pilih npth miror nya pilih edgecuts juga kaya tadi\n
+            7.
+
+""")
+    
+def Code1():
+    print("""
+        =====Kodingan Agrotek Tanpa web&thingspeak====
+        #include <Adafruit_Sensor.h>
+#include <DHT.h>
+#include <DHT_U.h>
+#include <LiquidCrystal_I2C.h>
+
+#define DHTPIN //masukkan pin sensor DHT
+#define DHTTYPE DHT21
+#define RELAY1_PIN //masukkan pin relay 1 
+#define RELAY2_PIN //masukkan pin relay 2
+#define RELAY3_PIN //masukkan pin relay 3
+
+DHT dht(DHTPIN, DHTTYPE);
+LiquidCrystal_I2C lcd(0x27, 20, 4);
+
+const int soilPin = ; //masukkan pin sensor soil moisture
+int soilValue;
+int soilPercentage;
+
+void setup() {
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(3, 0);
+  lcd.print("Selamat Datang!");
+  lcd.setCursor(0, 1);
+  lcd.print("WS Agroteknologi IoT");
+  lcd.setCursor(3, 3);
+  lcd.print("-- UG MURO --");
+  delay(5000);
+  lcd.clear();
+  delay(2000);
+
+  pinMode(soilPin, INPUT);
+  dht.begin();
+
+  pinMode(RELAY1_PIN, OUTPUT);
+  pinMode(RELAY2_PIN, OUTPUT);
+  pinMode(RELAY3_PIN, OUTPUT);
+  // Initialize relays to OFF state
+  digitalWrite(RELAY1_PIN, HIGH);  // HIGH to turn relay OFF
+  digitalWrite(RELAY2_PIN, HIGH);  // HIGH to turn relay OFF
+  digitalWrite(RELAY3_PIN, HIGH);  // HIGH to turn relay OFF
+}
+
+void loop() {
+  float temperature = dht.readTemperature();
+  float humidity = dht.readHumidity();
+  int soilValue = analogRead(soilPin);                   // Membaca nilai analog dari sensor
+  int soilPercentage = map(soilValue, 2048, 0, 0, 100);  // pakai mapping 2048 untuk 3v, 4095 untuk 5v
+  soilPercentage = constrain(soilPercentage, 0, 100);
+
+  // Display data on LCD
+  lcd.setCursor(5, 0);
+  lcd.print("Monitoring");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Suhu   : ");
+  lcd.setCursor(8, 1);
+  lcd.print(temperature);
+  lcd.setCursor(17, 1);
+  lcd.print("C");
+
+  lcd.setCursor(0, 2);
+  lcd.print("K.Udara: ");
+  lcd.setCursor(8, 2);
+  lcd.print( humidity);
+  lcd.setCursor(17, 2);
+  lcd.print("%");
+
+  lcd.setCursor(0, 3);
+  lcd.print("K.Tanah: ");
+  lcd.setCursor(9, 3);
+  lcd.print("       "); //6 spasi
+  lcd.setCursor(9, 3);
+  lcd.print(soilPercentage);
+  lcd.setCursor(17, 3);
+  lcd.print("%");
+
+  // Algoritma untuk menyalakan relay
+  if (temperature > 24 && humidity > 70) {
+    digitalWrite(RELAY1_PIN, HIGH); // Relay 1 menyala
+  } else {
+    digitalWrite(RELAY1_PIN, LOW); // Relay 1 mati
+  }
+
+  if (soilPercentage < 30) {
+    digitalWrite(RELAY3_PIN, HIGH); // Relay 2 (pompa) menyala
+  } else {
+    digitalWrite(RELAY3_PIN, LOW); // Relay 2 (pompa) mati
+  }
+
+  delay(1000);
+}
+""")
+    
+while True:
+    password = int(input("Password???"))
+    if password == 150216:
+        print("PILIHAN CONTEKAN")
+        x = int(input())
+        if x == 1:
+            kicad()
+        elif x ==2:
+            Flatcam()
+        elif x ==3:
+            Code1()
+        else:
+            break
+    else:
+            break
